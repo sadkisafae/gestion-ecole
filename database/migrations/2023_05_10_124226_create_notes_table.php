@@ -17,8 +17,8 @@ return new class extends Migration
             $table->float('note');
             $table->bigInteger('eleve_id')->unsigned();
             $table->bigInteger('matiere_id')->unsigned();
-            $table->foreign('eleve_id')->references('id')->on('eleves');
-            $table->foreign('matiere_id')->references('id')->on('matieres');
+            $table->foreign('eleve_id')->references('id')->on('eleves')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('matiere_id')->references('id')->on('matieres')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

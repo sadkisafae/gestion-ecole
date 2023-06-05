@@ -10,6 +10,7 @@ class Classe extends Model
     use HasFactory;
 
     public $timestamps = false;
+    protected $fillable = ["id",'nom',"niveau"];
 
     public function eleves(){
 

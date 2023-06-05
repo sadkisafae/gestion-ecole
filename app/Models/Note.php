@@ -7,12 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Note extends Model
 {
+    public $timestamps = false;
+    protected $fillable = ["id",'eleve_id',"matiere_id"];
+    // protected $with=["matieres"];
+    protected $table="notes";
     use HasFactory;
-    public function eleve(){
-        return $this->belongsTo(Eleve::class);
+    public function eleves(){
+        return $this->belongsTo(Eleve::class,"eleve_id");
     }
-
-    public function matiere(){
-        return $this->belongsTo(Matiere::class);
+    public function matieres(){
+        return $this->belongsTo(Matiere::class,"matiere_id");
     }
 }

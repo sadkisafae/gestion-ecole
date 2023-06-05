@@ -12,7 +12,7 @@ class NoteController extends Controller
      */
     public function index()
     {
-        return response()->json(Note::all(), 200, $headers);
+        return response()->json(Note::all());
     }
 
     /**
@@ -28,38 +28,48 @@ class NoteController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'note'=>'required',
+            'eleve_id'=>'required',
+            'matiere_id'=>'required',
+       ]);
+        $e = new Note();
+        $e->note = $request->note;
+        $e->eleve_id = $request->eleve_id;
+        $e->matiere_id = $request->matiere_id;
+        $e->save();
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Note $note)
+
+
+
+
+    public function destroy($id)
     {
-        //
+
+        $user = Note::find($id);
+        $user->delete();
+        return ["message"=>"eleve ". $id ." has been deleted successfully"];
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Note $note)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Note $note)
-    {
-        //
-    }
+    // public function noteDeEtudiant($id){
+    //     $notes = Note::where('eleve_id',$id)->get();
+    //     $result = [];
+    //     foreach($notes as $note){
+    //         $obj = [
+    //             'id' => $note->id,
+    //             'note' => $note->note,
+    //             'eleve_id' => $note->eleve_id,
+    //             'classe_id' => $note->eleves->classe_id,
+    //             'matiere_id' => $note->matiere_id,
+    //             'matiere_nom' => $note->matieres->nom,
+    //         ];
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Note $note)
-    {
-        //
-    }
+    //         $result[] = $obj;
+    //     }
+
+    //     return $result;
+
+    // }
 }

@@ -8,11 +8,17 @@ use Illuminate\Database\Eloquent\Model;
 class Matiere extends Model
 {
     use HasFactory;
-    public function enseignant(){
+    public $timestamps = false;
+    protected $fillable = ["id",'nom',"enseignant_id"];
+    protected $with=["notes"];
 
-        return $this->belongTo(Enseignant::class)
+    protected $table="matieres";
+
+    public function enseignants(){
+
+        return $this->belongsTo(Enseignant::class,"enseignant_id","id");
     }
     public function notes(){
-        return $this->hasMany(Note::class)
+        return $this->hasMany(Note::class);
     }
 }

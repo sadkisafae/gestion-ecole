@@ -12,7 +12,8 @@ class MatiereController extends Controller
      */
     public function index()
     {
-        return  response()->json(Matiere::all(), 200, $headers);
+        return  response()->json(Matiere::all());
+
     }
 
     /**
@@ -28,15 +29,25 @@ class MatiereController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nom'=>'required',
+            'enseignant_id'=>'required',
+
+
+       ]);
+        $ma = new Matiere();
+        $ma->nom = $request->nom;
+        $ma->enseignant_id = $request->enseignant_id;
+        $ma->save();
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Matiere $matiere)
+    public function show($id)
     {
-        //
+        return Matiere::find($id);
+
     }
 
     /**
@@ -50,16 +61,32 @@ class MatiereController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Matiere $matiere)
+    public function update(Request $request,$id)
     {
-        //
+        $fields = $request->validate([
+            'nom'=>'required',
+            'enseignant_id'=>'required',
+
+
+       ]);
+
+       $Matiere =  Matiere::find($id);
+
+       if(!$Matiere){
+        return response()->json(["message"=>"this Matiere doesn't exist"]);
+       }else{
+            $Matiere->update($fields);
+            return response()->json(["message"=>"dtudent has been update succefully"]);
+       }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Matiere $matiere)
+    public function destroy($id)
     {
-        //
+        $u = Matiere::find($id);
+        $u->delete();
+        return ["message"=>"matiere ". $id ." has been deleted successfully"];
     }
 }

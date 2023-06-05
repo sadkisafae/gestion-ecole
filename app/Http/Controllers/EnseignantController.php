@@ -10,56 +10,76 @@ class EnseignantController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return  response()->json(Enseignant::all(), 200, $headers);
+
+        return  response()->json(Enseignant::all());
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+
+
+        $request->validate([
+            'nom'=>'required',
+            'prenom'=>'required',
+            'date_de_naissance'=>'required',
+            'adresse'=>'required',
+            "telephone"=>"required",
+            'user_id'=>'required',
+       ]);
+        $e = new Enseignant();
+        $e->nom = $request->nom;
+        $e->prenom = $request->prenom;
+        $e->date_de_naissance = $request->date_de_naissance;
+        $e->adresse = $request->adresse;
+        $e->telephone = $request->telephone;
+        $e->user_id = $request->user_id;
+        $e->save();
+        return ["message"=>"enseignant has been created succfully"];
+
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Enseignant $enseignant)
+    public function show($id)
     {
-        //
+         return Enseignant::find($id);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Enseignant $enseignant)
+
+    public function update(Request $request,$id)
     {
-        //
+        $fields = $request->validate([
+            'nom'=>'required',
+            'prenom'=>'required',
+            'date_de_naissance'=>'required',
+            'adresse'=>'required',
+            "telephone"=>"required",
+            'user_id'=>'required'
+
+       ]);
+
+       $Enseignant =  Enseignant::find($id);
+
+       if(!$Enseignant){
+        return response()->json(["message"=>"this Enseignant doesn't exist"]);
+       }else{
+            $Enseignant->update($fields);
+            return response()->json(["message"=>"dtudent has been update succefully"]);
+       }
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Enseignant $enseignant)
+
+
+    public function destroy($id)
     {
-        //
+        $u = Enseignant::find($id);
+        $u->delete();
+        return ["message"=>"Enseignant ". $id ." has been deleted successfully"];
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Enseignant $enseignant)
-    {
-        //
-    }
+
 }

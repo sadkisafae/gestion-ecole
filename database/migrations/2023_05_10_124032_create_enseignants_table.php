@@ -11,15 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-      
+
         Schema::create('enseignants', function (Blueprint $table) {
             $table->id();
             $table->string('nom');
             $table->string('prenom');
             $table->date('date_de_naissance');
             $table->string('adresse');
-            $table->string('email');
             $table->string('telephone');
+
+            $table->bigInteger('user_id')->unsigned();
+            $table->foreign('user_id')->nullable()->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+
+
         });
     }
 

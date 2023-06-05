@@ -18,11 +18,17 @@ return new class extends Migration
             $table->string('prenom');
             $table->date('date_de_naissance');
             $table->string('adresse');
-            $table->string('email');
+
             $table->string('telephone');
+
             $table->bigInteger('classe_id')->unsigned();
-            $table->foreign('classe_id')->references('id')->on('classes');
-             });
+            $table->foreign('classe_id')->references('id')->on('classes')->onDelete('cascade')->onUpdate('cascade');
+
+            $table->bigInteger('user_id')->unsigned();
+            $table->foreign('user_id')->nullable()->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+            
+
+        });
     }
 
     /**

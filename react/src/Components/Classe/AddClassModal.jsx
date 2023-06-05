@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-function AddClassModal({ showModal , setShowModal, handleSave }) {
+function AddClassModal({showModal,setShowModal,handleSave }) {
   const [nom, setNom] = useState('');
   const [niveau, setNiveau] = useState('');
 

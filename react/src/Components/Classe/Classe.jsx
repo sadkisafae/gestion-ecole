@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react'
 import axios from "axios";
 import AddClassModal from './AddClassModal';
+import { Link } from 'react-router-dom';
 
 const Classe = () => {
 
@@ -18,22 +19,34 @@ const Classe = () => {
   },[])
 
   async  function handleAddClass(nom, niveau) {
+    if (!nom && !niveau){
+      alert('fields are required')
+    }
     const newClass = { id: classes.length + 1, nom, niveau };
     setClasses([...classes, newClass]);
 
     const { data } = await axios.post('http://127.0.0.1:8000/api/classes',newClass)
-   
-    alert('Added Successfully')
+    console.log(data)
+
   }
-
-  console.log(classes)
-
+  const deletClass = async (classe) => {
+    try {
+      const { data } = await axios.delete(
+        `http://127.0.0.1:8000/api/classes/${classe}`
+      );
+      alert(data.message);
+        //  const [classes, setClasses] = useState()
+         setClasses(classes.filter((e) => e.id !== classe));
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
 
     <div>
       <div className='flex justify-end my-3'>
-          <button onClick={()=>setShowAddModal(!showAddModal)} className="bg-green-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+          <button onClick={()=>setShowAddModal(true)} className="bg-green-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
             Add
           </button>
 
@@ -55,9 +68,9 @@ const Classe = () => {
         <td className="px-6 py-4 whitespace-nowrap">{element.niveau}</td>
         <td className="px-6 py-4 whitespace-nowrap">
           <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-            Edit
+             <Link to={`/update/${element.id}`}>Edit</Link>
           </button>
-          <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded ml-2">
+          <button  onClick={()=> deletClass(element.id)} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded ml-2">
             Delete
           </button>
         </td>
@@ -66,12 +79,16 @@ const Classe = () => {
   </tbody>
 </table>
 
+
+
+
 <AddClassModal
         showModal={showAddModal}
         setShowModal={setShowAddModal}
         handleSave={handleAddClass}
 />
 
+{/* <allerts /> */}
 </div>
 
 
